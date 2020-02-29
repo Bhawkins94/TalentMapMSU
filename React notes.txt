@@ -1,0 +1,7 @@
+React
+A library for Javascript used to generate UI for single webpage applications.
+Reach keeps a virtual Documnet Object Model (DOM) which it uses to make only the neccessary updates to a page
+Using ECMAScript 6 (ES6), we can work with a special form of Javascript function called classes, and use let and const to create variables
+	Classes have constructors, methods, children, parents
+	"let" creates variables with a block scope
+	"const" creates constants
