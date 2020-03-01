@@ -1,19 +1,25 @@
+/*ul {
+    border-style: solid;
+    border-color: rgb(255,100,255);
+    border-width: thick;
+}*/
+
 li{
     color: white;
-    font-size: 48px;
+    font-size: 34px;
 }
 
 nav li{
     float: left;
-    width: 15%;
+    width: 12%;
     text-align: center;
     background-color: rgb(0,99,148);
-    margin: 5px;
-}
-
-nav li{
     position: relative;
     list-style: none;
-    padding: 1px;
+    padding: 1px 1px 1px 1px;
     margin: 0px;
+}
+
+li.wider{
+    width: 15%;
 }
