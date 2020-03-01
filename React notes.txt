@@ -5,3 +5,12 @@ Using ECMAScript 6 (ES6), we can work with a special form of Javascript function
 	Classes have constructors, methods, children, parents
 	"let" creates variables with a block scope
 	"const" creates constants
+ReactDOM.render allows React to render HTML script
+	ReactDOM.render(variableWithHTML, document.getElementById('id in HTML doc'));
+Javascript XML (JSX) converts HTML tags into React elements
+Components are functions which return HTML elements
+	Class components
+	Function components
+Props (properties) act like arguments to Javascript functions and HTML attributes
+	this.props.variable
+	Read only
