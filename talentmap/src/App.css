@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+*{
+	font-family: "Open Sans", sans-serif;
+	font-size: 16px;
+}
+
+
 /*ul {
     border-style: solid;
     border-color: rgb(255,100,255);
@@ -6,20 +14,20 @@
 
 li{
     color: white;
-    font-size: 34px;
 }
 
 nav li{
+	font-weight: lighter;
+	font-size: 14px;
     float: left;
     width: 12%;
     text-align: center;
     background-color: rgb(0,99,148);
     position: relative;
     list-style: none;
-    padding: 1px 1px 1px 1px;
-    margin: 0px;
+    padding: 10px 0px 10px 0px;
 }
 
-li.wider{
-    width: 15%;
+#selectedPage{
+	font-weight: bold;
 }
