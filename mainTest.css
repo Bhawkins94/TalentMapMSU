@@ -1,0 +1,120 @@
+/*message text box and button style*/
+#messages{
+  list-style-type: none;
+
+}
+
+#message{
+  width: 1000px;
+  height: 20px;
+}
+
+#submit{
+  width: 90px;
+  height: 20px;
+}
+
+#sendTo{
+  width: 950px;
+  border: none;
+  height: 20px;
+}
+
+#newMsg{
+  grid-row: 3;
+  grid-column: 1;
+}
+
+#newMsgBtn{
+  margin-top: 3px;
+  width: 250px;
+  height: 20px;
+}
+
+ #searchBtn{
+   float: right;
+ }
+
+#sendToBox{
+  grid-row: 1;
+  grid-column: 2;
+}
+
+/*search styling*/
+#myInput {
+  /*background-image: url(''); /* Add a search icon to input */
+  /* background-position: 10px 12px; Position the search icon */
+  /* background-repeat: no-repeat; Do not repeat the icon image */
+  width: 100px; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+  height: 1px;
+}
+
+#myUL {
+  /* Remove default list styling */
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#myUL li a {
+  border: 1px solid #ddd; /* Add a border to all links */
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6; /* Grey background color */
+  padding: 12px; /* Add some padding */
+  text-decoration: none; /* Remove default text underline */
+  font-size: 18px; /* Increase the font-size */
+  color: black; /* Add a black text color */
+  display: block; /* Make it into a block element to fill the whole list */
+  width: 85%;
+}
+
+#myUL li a:hover:not(.header) {
+  background-color: #eee; /* Add a hover effect to all links, except for headers */
+}
+
+
+
+/*grid styling*/
+.container {
+  display: grid;
+  grid-template-columns: 250px auto;
+  grid-template-rows: 30px 580px; 30px;
+  grid-gap: 10px;
+  background-color: #2196F3;
+  padding: 10px;
+}
+
+#itemA{
+  grid-row: 1;
+  grid-column: 1;
+}
+
+#itemB{
+  grid-row: 3;
+  grid-column: 2;
+}
+
+
+
+
+#item1, #item2 {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+
+}
+
+#item1{
+  grid-column: 1 / span 1;
+  grid-row: 2;
+  overflow: scroll;
+}
+
+#item2{
+  grid-column: 2 / span 2;
+  grid-row: 2;
+  overflow: scroll;
+}
