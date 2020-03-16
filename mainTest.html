@@ -1,84 +1,180 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-	</head>
-  
-	<body>
-		<!--intialize firebase-->
+  <head>
+    <meta charset="utf-8">
+    <title>Chat Box</title>
 
-		<!-- The core Firebase JS SDK is always required and must be listed first -->
-		<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js"></script>
+  </head>
+  <link rel="stylesheet" href="mainTest.css">
+  <link rel="stylesheet" href="front.css">
 
-		<!-- inlcude firebase database-->
-		<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-database.js"></script>
+  <body>
 
-		<!-- TODO: Add SDKs for Firebase products that you want to use
-			https://firebase.google.com/docs/web/setup#available-libraries -->
-		<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-analytics.js"></script>
+<!--intialize firebase-->
 
-		<script>
-			// Your web app's Firebase configuration
-			var firebaseConfig = {
-			apiKey: "AIzaSyDy5JjYveoqLOZdhojGwuJibtIocna3d5g",
-			authDomain: "testdb-37f87.firebaseapp.com",
-			databaseURL: "https://testdb-37f87.firebaseio.com",
-			projectId: "testdb-37f87",
-			storageBucket: "testdb-37f87.appspot.com",
-			messagingSenderId: "120807551652",
-			appId: "1:120807551652:web:a1767dc18021d7de05ec31",
-			measurementId: "G-5D0YGDHH5F"
-			};
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js"></script>
 
-			// Initialize Firebase
-			firebase.initializeApp(firebaseConfig);
-			firebase.analytics();
-	  
-		</script>
+<!-- inlcude firebase database-->
+<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-database.js"></script>
 
-		<script>
-			var myName = prompt("Enter your name");
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-analytics.js"></script>
 
-			function sendMessage(){
-	  
-				//get Message
-				var message = document.getElementById("message").value;
-		
-				//get Timestamp, this is what gets the time you send the message
-				var d = new Date();
-				var time = d.toLocaleTimeString();
-		
-				//save in database
-				firebase.database().ref("messages").push().set({
-					"sender": myName,
-					"message": message,
-					"timestamp": time
-				});
-				
-				//prevent form from submitting
-				return false;
-			}
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDy5JjYveoqLOZdhojGwuJibtIocna3d5g",
+    authDomain: "testdb-37f87.firebaseapp.com",
+    databaseURL: "https://testdb-37f87.firebaseio.com",
+    projectId: "testdb-37f87",
+    storageBucket: "testdb-37f87.appspot.com",
+    messagingSenderId: "120807551652",
+    appId: "1:120807551652:web:a1767dc18021d7de05ec31",
+    measurementId: "G-5D0YGDHH5F"
+  };
 
-			//listen for incoming messages
-			firebase.database().ref("messages").on("child_added", function (snapshot){
-			var html = "";
-			html += "<li>";
-			html += snapshot.val().sender + ": " + snapshot.val().message;
-			html += "<li>";
-			html += snapshot.val().timestamp; //in this list element, the timestamp will be added
-			document.getElementById("messages").innerHTML += html;
-			});
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
 
-		</script>
+  //var myName = prompt("Enter your name");
 
-		<form onsubmit="return sendMessage();">
-			<input id="message" placeholder="Enter message" autocomplete="off">
-			<input type="submit">
-		</form>
 
-		<!-- create a list of msgs-->
-		<ul id="messages"></ul>
-		
-	</body>
+
+  function sendMessage(){
+    //get Message
+    var message = document.getElementById("message").value;
+
+    //save in database
+    firebase.database().ref("messages").push().set({
+      "sender": myName,
+      "message": message
+    });
+
+    //clears the text box after a message is sent
+    document.getElementById("message").value = "";
+    //prevent form from submitting
+    return false;
+  }
+
+  //listen for incoming messages
+  firebase.database().ref("messages").on("child_added", function (snapshot){
+    var html = "";
+    html += "<li>";
+      html += snapshot.val().sender + ": " + snapshot.val().message;
+    //html += "<li>";
+
+    document.getElementById("messages").innerHTML += html;
+  });
+
+</script>
+
+<div class="headerBox">
+  <header class="header">
+    <h1 class="title"></h1>
+
+    <nav class="dashNav">
+      <ol>
+        <li><img src="https://img.icons8.com/material-sharp/48/000000/bookmark-ribbon.png"></li>
+        <li><a href="dummyDashboard.html">Dashboard</a></li>
+        <li><a href="dummySurvey.html">Survey</a></li>
+        <li><a href="dummyReports.html">Reports</a></li>
+        <li><a href="dummyFeedback.html">Feedback</a></li>
+        <li><a href="dummyActionPlan.html">Action Planning</a></li>
+        <li><a href="dummyAdmin.html">Admin</a></li>
+        <li style="float:right"><a href="#"><img src="https://img.icons8.com/material-sharp/24/000000/geography.png"></a></li>
+          <li style="float:right"><a href="#"><img src="https://img.icons8.com/material-sharp/24/000000/user-male-circle.png"></a></li>
+      </ol>
+    </nav>
+  </header>
+<div>
+
+<div class="container">
+
+  <div id="itemA">
+      <input type="text" id="myInput" onkeyup="mySearch()" placeholder="Search" >
+      <button id="searchBtn">Search</button>
+  </div>
+
+  <div id="item1">
+
+    <ul id="myUL" >
+      <li><a href="#">Adele</a></li>
+      <li><a href="#">Agnes</a></li>
+
+      <li><a href="#">Billy</a></li>
+      <li><a href="#">Bob</a></li>
+
+      <li><a href="#">Calvin</a></li>
+      <li><a href="#">Christina</a></li>
+      <li><a href="#">Cindy</a></li>
+
+      <li><a href="#">Dave</a></li>
+      <li><a href="#">Derrick</a></li>
+      <li><a href="#">Dolly</a></li>
+      <li><a href="#">Dove</a></li>
+
+      <li><a href="#">Erick</a></li>
+      <li><a href="#">Ethan</a></li>
+
+      <li><a href="#">Kat</a></li>
+      <li><a href="#">Katelyn</a></li>
+      <li><a href="#">Kianna</a></li>
+      <li><a href="#">Kitt</a></li>
+
+      <li><a href="#">Mark</a></li>
+      <li><a href="#">Mason</a></li>
+      <li><a href="#">Mike</a></li>
+      <li><a href="#">Mitchell</a></li>
+
+    </ul>
+  </div>
+
+  <div id="newMsg"> <button type="button" id="newMsgBtn">New Message</button></div>
+
+  <div id="sendToBox">
+    <label id="sendToLbl">Send to:</label>
+    <input type="text" id="sendTo" placeholder="enter receipient" ></div>
+
+  <div id="item2">
+    <form  onsubmit="return sendMessage();">
+      <!-- create a list of msgs-->
+      <ul id="messages"></ul>
+    </form>
+  </div>
+
+  <div id="itemB">
+    <form  onsubmit="return sendMessage();">
+      <input type="text" id="message" placeholder="Enter message" autocomplete="off">
+      <input type="submit" id="submit">
+    </form>
+  </div>
+
+
+</div>
+
+
+
+
+  <script>
+  function mySearch() {
+      var input, filter, ul, li, a, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      ul = document.getElementById("myUL");
+      li = ul.getElementsByTagName("li");
+      for (i = 0; i < li.length; i++) {
+          a = li[i].getElementsByTagName("a")[0];
+          txtValue = a.textContent || a.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              li[i].style.display = "";
+          } else {
+              li[i].style.display = "none";
+          }
+      }
+  }
+  </script>
+</body>
 </html>
