@@ -14,3 +14,6 @@ Components are functions which return HTML elements
 Props (properties) act like arguments to Javascript functions and HTML attributes
 	this.props.variable
 	Read only
+
+Comments in React require {}
+    example: {/*This is a comment*/}

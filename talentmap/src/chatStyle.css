@@ -91,8 +91,11 @@ img{ max-width:100%;}
 
 .mesgs {
   float: left;
+  position: relative;
+  top: -600px;
+  left: -100px;
   margin-left: 500px;
-  padding: 30px 15px 0px 25px;
+  padding: 30px 15px 0 25px;
   width: 700px;
 }
 
@@ -133,16 +136,17 @@ img{ max-width:100%;}
   top: 11px;
   width: 33px;
 }
-.messaging { padding: 0 0 50px 0;
+.messaging {
+  padding: 0 0 50px 0;
 
 }
 
 .newBtn{
   font-size: 20px;
-  width: 250px;
-
-
+  color: white;
+  width: 260px;
   position: relative;
+  left: 16px;
   text-align: center;
   border-radius: 8px;
   background-color: #E87424;
