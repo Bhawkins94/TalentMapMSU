@@ -1,0 +1,15 @@
+Front end needs:
+User
+-Threads
+--Sender
+--Subject
+--Date + time(for sorting)
+--Messages
+---Sender
+---Receiver
+---Date + time
+---Text
+
+Also ability to send:
+Thread w/ Subject, Sender, and Receiver
+Messages with Sender, Receiver, and Text
