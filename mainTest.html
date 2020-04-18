@@ -2,13 +2,15 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Box</title>
 
   </head>
   <link rel="stylesheet" href="mainTest.css">
   <link rel="stylesheet" href="front.css">
 
-  <body>
+
+
 
 <!--intialize firebase-->
 
@@ -35,45 +37,101 @@
     measurementId: "G-5D0YGDHH5F"
   };
 
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
-
-  //var myName = prompt("Enter your name");
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
 
 
 
-  function sendMessage(){
-    //get Message
+  var myName = prompt("Enter your name");
+
+
+
+      /*lists all the people you current have a chat room with -- needs to be outside of a function so The
+        list loads automatically*/
+      firebase.database().ref("messages").child(myName).child("chatRooms").on("child_added", function (snapshot){
+        var chats = "";
+        chats += "<li><a href='#'>";
+          chats += snapshot.val().name;
+
+          document.getElementById("myUL").innerHTML += chats;
+      });
+
+
+      //  document.getElementById.("showUser").innerHTML = myName;
+      function sendMessage(){
+        var message = document.getElementById("message").value;
+        var receipient = document.getElementById("sendTo").value;
+        var d = new Date();
+        var time = d.toLocaleTimeString();
+
+     //save in current user in tree node
+     firebase.database().ref("messages").child(myName).child(receipient).push().set({
+       "sender": myName,
+       "message": message,
+       "timestamp": time
+     });
+
+
+     firebase.database().ref("messages").child(myName).child("chatRooms").child(receipient).set({
+       "name": receipient
+     });
+
+     //save in receipient tree node database
+     firebase.database().ref("messages").child(receipient).child(myName).push().set({
+       "sender": myName,
+       "message": message,
+       "timestamp": time
+     });
+
+
+     //listen for incoming messages
+     firebase.database().ref("messages").child(myName).child(receipient).on("child_added", function (snapshot){
+       var html = "";
+       html += "<li>";
+         html += snapshot.val().sender +": "+ snapshot.val().message +"  "+ snapshot.val().timestamp;
+
+         document.getElementById("messages").innerHTML += html;
+     });
+
+
+ //clears the text box after a message is sent
+ document.getElementById("message").value = "";
+
+
+ //prevent form from submitting
+ return false;
+
+
+}
+
+
+
+  function newMsg(){
       var message = document.getElementById("message").value;
-    var d = new Date();
-    var time = d.toLocaleTimeString();
+      var receipient = document.getElementById("sendTo").value;
+      var d = new Date();
+      var time = d.toLocaleTimeString();
 
-    //save in database
-    firebase.database().ref("messages").push().set({
-      "sender": myName,
-      "message": message,
-      "timestamp": time
-    });
+      //document.getElementById("myUL").innerHTML = receipient;
+      //save user in tree node
+      firebase.database().ref("messages").child("users").child(receipient).push().set({
+        "name":receipient
+      });
+      //save in database
+      firebase.database().ref("messages").child(myName).child(receipient).push().set({
+        "message": message,
+        "timestamp": time
+      });
 
-    //clears the text box after a message is sent
-    document.getElementById("message").value = "";
-    //prevent form from submitting
-    return false;
+      return false;
+
   }
 
-  //listen for incoming messages
-  firebase.database().ref("messages").on("child_added", function (snapshot){
-    var html = "";
-    html += "<li>";
-      html += snapshot.val().sender + ": " + snapshot.val().message +"  "+ snapshot.val().timestamp;
-    //html += "<li>";
 
-    document.getElementById("messages").innerHTML += html;
-  });
 
 </script>
-
+  <body>
 <div class="headerBox">
   <header class="header">
     <h1 class="title"></h1>
@@ -88,23 +146,29 @@
         <li><a href="dummyActionPlan.html">Action Planning</a></li>
         <li><a href="dummyAdmin.html">Admin</a></li>
         <li style="float:right"><a href="#"><img src="https://img.icons8.com/material-sharp/24/000000/geography.png"></a></li>
-          <li style="float:right"><a href="#"><img src="https://img.icons8.com/material-sharp/24/000000/user-male-circle.png"></a></li>
+        <li style="float:right"><a href="#"><img src="https://img.icons8.com/material-sharp/24/000000/user-male-circle.png"></a></li>
       </ol>
     </nav>
   </header>
-<div>
+</div>
+
+<br>
+
+
+<h4 id="showUser"></h4>
+
 
 <div class="container">
 
   <div id="itemA">
       <input type="text" id="myInput" onkeyup="mySearch()" placeholder="Search" >
-      <button id="searchBtn">Search</button>
+    
   </div>
 
-  <div id="item1">
+  <div id="item1" >
 
-    <ul id="myUL" >
-      <li><a href="#">Adele</a></li>
+    <ul id="myUL" onclick="loadChat()">
+      <!--li><a href="#">Adele</a></li>
       <li><a href="#">Agnes</a></li>
 
       <li><a href="#">Billy</a></li>
@@ -130,16 +194,24 @@
       <li><a href="#">Mark</a></li>
       <li><a href="#">Mason</a></li>
       <li><a href="#">Mike</a></li>
-      <li><a href="#">Mitchell</a></li>
+      <li><a href="#">Mitchell</a></li-->
 
     </ul>
   </div>
 
-  <div id="newMsg"> <button type="button" id="newMsgBtn">New Message</button></div>
+  <div id="newMsg">
+    <form onsubmit="return newMsg()">
+      <input type="submit"  value="New Message" onclick="newMsg()" id="newMsgBtn" >
+    </form>
+
+  </div>
 
   <div id="sendToBox">
+    <form  onsubmit="return sendMessage();">
     <label id="sendToLbl">Send to:</label>
-    <input type="text" id="sendTo" placeholder="enter receipient" ></div>
+    <input type="text" id="sendTo" placeholder="enter receipient" required>
+  </form>
+  </div>
 
   <div id="item2">
     <form  onsubmit="return sendMessage();">
@@ -147,6 +219,8 @@
       <ul id="messages"></ul>
     </form>
   </div>
+
+
 
   <div id="itemB">
     <form  onsubmit="return sendMessage();">
