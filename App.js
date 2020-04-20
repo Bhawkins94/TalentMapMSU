@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
-import './chatStyle.css'
+import './chatStyle.css';
+import firebase from './firebase.js';
 import LanguageIcon from '@material-ui/icons/Language';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SendIcon from '@material-ui/icons/Send';
-
 
 class Dashboard extends React.Component{
 	render() {
@@ -28,8 +28,93 @@ class Dashboard extends React.Component{
 					</nav>
 				</header>
 			</div>
+			
 		);
 	}
+}
+
+/* function startFirebase(){
+	<div>
+	<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-database.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-analytics.js"></script>
+
+	<script>
+		// Your web app's Firebase configuration
+		var firebaseConfig = {
+			apiKey: "AIzaSyDy5JjYveoqLOZdhojGwuJibtIocna3d5g",
+			authDomain: "testdb-37f87.firebaseapp.com",
+			databaseURL: "https://testdb-37f87.firebaseio.com",
+			projectId: "testdb-37f87",
+			storageBucket: "testdb-37f87.appspot.com",
+			messagingSenderId: "120807551652",
+			appId: "1:120807551652:web:a1767dc18021d7de05ec31",
+			measurementId: "G-5D0YGDHH5F"
+		};
+
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+		firebase.analytics();
+					
+		var myName = prompt("Enter your name");
+
+		function sendMessage(){
+			//get Message
+			var message = document.getElementById("message").value;
+			
+			//save in database
+			firebase.database().ref("messages").push().set({
+				"sender": myName,
+				"message": message
+			});
+			//prevent form from submitting
+			return false;
+		}
+
+		//listen for incoming messages
+		firebase.database().ref("messages").on("child_added", function (snapshot){
+			var html = "";
+			html += "<li>";
+			html += snapshot.val().sender + ": " + snapshot.val().message;
+			html += "<li>";
+
+			document.getElementById("messages").innerHTML += html;
+		});
+	</script>
+	</div>
+} */
+
+	var myName = prompt("Enter your name");
+	
+	firebase.database().ref("messages").child(myName).child("chatRooms").on("child_added", function (snapshot){
+        var chats = "";
+        chats += "<li><a href='#'>";
+          chats += snapshot.val().name;
+
+          document.getElementById("myUL").innerHTML += chats;
+      });
+
+
+function sendMessage(){
+	var message = document.getElementById("message").value;
+	var receipient = document.getElementById("sendTo").value;
+	var d = new Date();
+	var time = d.toLocaleTimeString();
+	
+	//save in database
+/*     firebase.database().ref("messages").push().set({
+      "sender": myName,
+      "reciever": receipient,
+      "message": message,
+      "timestamp": time
+    });
+	
+	//clears the text box after a message is sent
+    document.getElementById("message").value = "";
+    //prevent form from submitting
+    return false; */
 }
 
 class Search extends React.Component{
