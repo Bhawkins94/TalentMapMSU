@@ -43,7 +43,7 @@
 
 
 
-  var myName = prompt("Enter your name");
+    var myName = prompt("Enter your name");
 
 
 
@@ -58,70 +58,64 @@
       });
 
 
-
       //  document.getElementById.("showUser").innerHTML = myName;
       function sendMessage(){
-        document.getElementById("showUser").innerHTML = myName;
         var message = document.getElementById("message").value;
         var receipient = document.getElementById("sendTo").value;
         var d = new Date();
         var time = d.toLocaleTimeString();
 
-         //save in current user in tree node
-         firebase.database().ref("messages").child(myName).child(receipient).push().set({
-           "sender": myName,
-           "message": message,
-           "timestamp": time
-         });
-
-         //save in chat room
-         firebase.database().ref("messages").child(myName).child("chatRooms").child(receipient).set({
-           "name": receipient
-         });
-
-         //save in receipient tree node database
-         firebase.database().ref("messages").child(receipient).child(myName).push().set({
-           "sender": myName,
-           "message": message,
-           "timestamp": time
-         });
+     //save in current user in tree node
+     firebase.database().ref("messages").child(myName).child(receipient).push().set({
+       "sender": myName,
+       "message": message,
+       "timestamp": time
+     });
 
 
-         document.getElementById("messages").innerHTML = " ";
+     firebase.database().ref("messages").child(myName).child("chatRooms").child(receipient).set({
+       "name": receipient
+     });
 
-         //listen for incoming messages for current user
-         firebase.database().ref("messages").child(myName).child(receipient).on("child_added", function (snapshot){
-           var msg = "";
+     //save in receipient tree node database
+     firebase.database().ref("messages").child(receipient).child(myName).push().set({
+       "sender": myName,
+       "message": message,
+       "timestamp": time
+     });
 
-           msg += "<li>";
-            document.getElementById("messages").innerHTML += " ";
-             msg += snapshot.val().sender +": "+ snapshot.val().message +"  "+ snapshot.val().timestamp;
-             document.getElementById("messages").innerHTML += " ";
+     document.getElementById("messages").innerHTML = " ";
+     //listen for incoming messages
+     firebase.database().ref("messages").child(myName).child(receipient).on("child_added", function (snapshot){
+       var html = "";
+       html += "<li><br>";
+         html += snapshot.val().sender +": "+ snapshot.val().message +"  "+ snapshot.val().timestamp;
 
-             document.getElementById("messages").innerHTML += msg;
-         });
+         document.getElementById("messages").innerHTML += html;
+     });
 
 
+ //clears the text box after a message is sent
+ document.getElementById("message").value = "";
 
-       //clears the text box after a message is sent
-       document.getElementById("message").value = "";
 
-       //prevent form from submitting
-       return false;
+ //prevent form from submitting
+ return false;
 
-     }
 
+}
 
   function newMsg(){
-        document.getElementById("sendTo").focus();
-        document.getElementById("sendTo").value = " ";
-        document.getElementById("messages").innerHTML = " ";
-        return false;
+    document.getElementById("sendTo").focus();
+     document.getElementById("sendTo").value = " ";
+     document.getElementById("messages").innerHTML = " ";
+     return false;
+
   }
 
 
-</script>
 
+</script>
   <body>
 <div class="headerBox">
   <header class="header">
@@ -129,42 +123,41 @@
 
     <nav class="dashNav">
       <ol>
-        <li><img src="https://img.icons8.com/material-sharp/48/000000/bookmark-ribbon.png"></li>
+        <li><img src="logo.png" height= "50" width = "40"></li>
         <li><a href="#">Dashboard</a></li>
-        <li><a href="#">Survey</a></li>
         <li><a href="#">Reports</a></li>
-        <li><a href="#">Feedback</a></li>
-        <li><a href="#">Action Planning</a></li>
-        <li><a href="#">Admin</a></li>
-        <li style="float:right"><a href="#"><img src="https://img.icons8.com/material-sharp/24/000000/geography.png"></a></li>
-        <li style="float:right"><a href="#"><img src="https://img.icons8.com/material-sharp/24/000000/user-male-circle.png"></a></li>
+        <li><a href="dummyFeedback.html">Feedback</a></li>
+        <li style="float:right"><a href="#"><img src="user.png" height= "20" width = "20"></a></li>
+        <li style="float:right"><a href="#"><img src="globe.png" height= "20" width = "20"></a></li>
       </ol>
     </nav>
   </header>
 </div>
 
-<br>
 
 
-<p id="showUser"></p>
+<h4 id="showUser"></h4>
 
 
 <div class="container">
 
   <div id="itemA">
       <input type="text" id="myInput" onkeyup="mySearch()" placeholder="Search" >
-
+      <!--button id="searchBtn">Search</button-->
+      <br>
   </div>
 
   <div id="item1" >
     <ul id="myUL" onclick="loadChat()">
     </ul>
+    <br>
   </div>
 
   <div id="newMsg">
-    <form onsubmit="return newMsg();">
+    <form onsubmit="return newMsg()">
       <input type="submit"  value="New Message" onclick="newMsg()" id="newMsgBtn" >
     </form>
+    <br>
   </div>
 
   <div id="sendToBox">
@@ -172,6 +165,7 @@
     <label id="sendToLbl">Send to:</label>
     <input type="text" id="sendTo" placeholder="enter receipient" required>
   </form>
+  <br>
   </div>
 
   <div id="item2">
@@ -179,18 +173,21 @@
       <!-- create a list of msgs-->
       <ul id="messages"></ul>
     </form>
+    <br>
   </div>
 
 
 
   <div id="itemB">
+    <br>
     <form  onsubmit="return sendMessage();">
       <input type="text" id="message" placeholder="Enter message" autocomplete="off">
-      <input type="submit" id="submit">
+      <input type="submit" id="submit" value="">
     </form>
+
   </div>
 
-
+  <br>
 </div>
 
 
