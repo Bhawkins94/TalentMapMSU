@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Box</title>
+
+  </head>
+  <link rel="stylesheet" href="mainTest.css">
+  <link rel="stylesheet" href="front.css">
+
+
+
+
+<!--intialize firebase-->
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js"></script>
+
+<!-- inlcude firebase database-->
+<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-database.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDy5JjYveoqLOZdhojGwuJibtIocna3d5g",
+    authDomain: "testdb-37f87.firebaseapp.com",
+    databaseURL: "https://testdb-37f87.firebaseio.com",
+    projectId: "testdb-37f87",
+    storageBucket: "testdb-37f87.appspot.com",
+    messagingSenderId: "120807551652",
+    appId: "1:120807551652:web:a1767dc18021d7de05ec31",
+    measurementId: "G-5D0YGDHH5F"
+  };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+
+
+    var myName = prompt("Enter your name");
+
+
+
+      /*lists all the people you current have a chat room with -- needs to be outside of a function so The
+        list loads automatically*/
+      firebase.database().ref("messages").child(myName).child("chatRooms").on("child_added", function (snapshot){
+        var chats = "";
+        chats += "<li><a href='#'>";
+          chats += snapshot.val().name;
+
+          document.getElementById("myUL").innerHTML += chats;
+      });
+
+
+      //  document.getElementById.("showUser").innerHTML = myName;
+      function sendMessage(){
+        var message = document.getElementById("message").value;
+        var receipient = document.getElementById("sendTo").value;
+        var d = new Date();
+        var time = d.toLocaleTimeString();
+
+     //save in current user in tree node
+     firebase.database().ref("messages").child(myName).child(receipient).push().set({
+       "sender": myName,
+       "message": message,
+       "timestamp": time
+     });
+
+
+     firebase.database().ref("messages").child(myName).child("chatRooms").child(receipient).set({
+       "name": receipient
+     });
+
+     //save in receipient tree node database
+     firebase.database().ref("messages").child(receipient).child(myName).push().set({
+       "sender": myName,
+       "message": message,
+       "timestamp": time
+     });
+
+     document.getElementById("messages").innerHTML = " ";
+     //listen for incoming messages
+     firebase.database().ref("messages").child(myName).child(receipient).on("child_added", function (snapshot){
+       var html = "";
+       html += "<li><br>";
+         html += snapshot.val().sender +": "+ snapshot.val().message +"  "+ snapshot.val().timestamp;
+
+         document.getElementById("messages").innerHTML += html;
+     });
+
+
+ //clears the text box after a message is sent
+ document.getElementById("message").value = "";
+
+
+ //prevent form from submitting
+ return false;
+
+
+}
+
+  function newMsg(){
+    document.getElementById("sendTo").focus();
+     document.getElementById("sendTo").value = " ";
+     document.getElementById("messages").innerHTML = " ";
+     return false;
+
+  }
+
+
+
+</script>
+  <body>
+<div class="headerBox">
+  <header class="header">
+    <h1 class="title"></h1>
+
+    <nav class="dashNav">
+      <ol>
+        <li><img src="logo.png" height= "50" width = "40"></li>
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Reports</a></li>
+        <li><a href="dummyFeedback.html">Feedback</a></li>
+        <li style="float:right"><a href="#"><img src="user.png" height= "20" width = "20"></a></li>
+        <li style="float:right"><a href="#"><img src="globe.png" height= "20" width = "20"></a></li>
+      </ol>
+    </nav>
+  </header>
+</div>
+
+
+
+<h4 id="showUser"></h4>
+
+
+<div class="container">
+
+  <div id="itemA">
+      <input type="text" id="myInput" onkeyup="mySearch()" placeholder="Search" >
+      <!--button id="searchBtn">Search</button-->
+      <br>
+  </div>
+
+  <div id="item1" >
+    <ul id="myUL" onclick="loadChat()">
+    </ul>
+    <br>
+  </div>
+
+  <div id="newMsg">
+    <form onsubmit="return newMsg()">
+      <input type="submit"  value="New Message" onclick="newMsg()" id="newMsgBtn" >
+    </form>
+    <br>
+  </div>
+
+  <div id="sendToBox">
+    <form  onsubmit="return sendMessage();">
+    <label id="sendToLbl">Send to:</label>
+    <input type="text" id="sendTo" placeholder="enter receipient" required>
+  </form>
+  <br>
+  </div>
+
+  <div id="item2">
+    <form  onsubmit="return sendMessage();">
+      <!-- create a list of msgs-->
+      <ul id="messages"></ul>
+    </form>
+    <br>
+  </div>
+
+
+
+  <div id="itemB">
+    <br>
+    <form  onsubmit="return sendMessage();">
+      <input type="text" id="message" placeholder="Enter message" autocomplete="off">
+      <input type="submit" id="submit" value="">
+    </form>
+
+  </div>
+
+  <br>
+</div>
+
+
+
+
+  <script>
+  function mySearch() {
+      var input, filter, ul, li, a, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      ul = document.getElementById("myUL");
+      li = ul.getElementsByTagName("li");
+      for (i = 0; i < li.length; i++) {
+          a = li[i].getElementsByTagName("a")[0];
+          txtValue = a.textContent || a.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              li[i].style.display = "";
+          } else {
+              li[i].style.display = "none";
+          }
+      }
+  }
+  </script>
+</body>
+</html>
